@@ -1,14 +1,18 @@
-meteor-publish-composite
+meteor-publish-composite with server transform before publish
 ========================
 
 `Meteor.publishComposite(...)` provides a flexible way to publish a set of related documents from various collections using a reactive join. This makes it easy to publish a whole tree of documents at once. The published collections are reactive and will update when additions/changes/deletions are made.
 
 This project differs from many other parent/child relationship mappers in its flexibility. The relationship between a parent and its children can be based on almost anything. For example, let's say you have a site that displays news articles. On each article page, you would like to display a list at the end containing a couple of related articles. You could use `publishComposite` to publish the primary article, scan the body for keywords which are then used to search for other articles, and publish these related articles as children. Of course, the keyword extraction and searching are up to you to implement.
 
+Just add parameter transformFunction to options to use server transform;
+
 ## Installation
 
+clone repository to /packages/
+
 ```sh
-$ meteor add reywood:publish-composite
+$ meteor add icedigital:publish-composite
 ```
 
 
@@ -42,6 +46,7 @@ Arguments
                     // in as an argument.
                     // Must return a cursor of second tier documents.
                 },
+                transformFunction:function(doc){doc.level=1;return doc},
                 children: [
                     {
                         find: function(secondTierDocument, topLevelDocument) {
